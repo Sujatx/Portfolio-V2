@@ -1,17 +1,25 @@
+/* 1️⃣ Google font imports MUST be at the very top */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+/* 2️⃣ Tailwind import */
 @import "tailwindcss";
 
+/* 3️⃣ Custom font-face */
+@font-face {
+  font-family: 'DuneRise';
+  src: url('/fonts/Dune_Rise.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 4️⃣ CSS variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* 5️⃣ Dark mode variables */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +27,43 @@
   }
 }
 
+/* 6️⃣ Keyframes */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Optional repeated gradientShift (merge if needed) */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 7️⃣ Classes */
+.animate-gradient-shift {
+  background-size: 600% 600%;
+  animation: gradient-shift 30s ease infinite;
+}
+
+/* 8️⃣ Global styles */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
+  background: linear-gradient(270deg, #0f0c29, #302b63, #24243e);
+  background-size: 600% 600%;
+  animation: gradientShift 20s ease infinite;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Rajdhani', Arial, Helvetica, sans-serif; /* <-- removed DuneRise from global */
+}
+
+/* 9️⃣ Theme variables (if using @theme inline) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
