@@ -49,7 +49,7 @@
 
 /* 8️⃣ Global styles */
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth;  <-- REMOVED to prevent conflict with Lenis */
 }
 
 body {

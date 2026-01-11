@@ -1,7 +1,7 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 
 const projects = [
   {
@@ -34,40 +34,35 @@ const projects = [
 ];
 
 export default function WorkGallery() {
-  const targetRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
-
-  // Horizontal scroll logic: Moves from 1% to -65% as you scroll down
-  // Adjust the -65% based on how many items you have to ensure the last one is visible
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-65%"]);
-
   return (
-    <div className="bg-black text-white">
-      
-      {/* === DESKTOP: HORIZONTAL SCROLL === */}
-      <section ref={targetRef} className="relative h-[300vh] hidden md:block">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-          <motion.div style={{ x }} className="flex gap-12 px-20">
-            
-            {/* Intro Text Card */}
-            <div className="flex flex-col justify-center min-w-[400px]">
-              <h1 className="text-7xl font-bold leading-tight">
-                Selected <br /> <span className="text-purple-500">Works</span>
-              </h1>
-              <p className="mt-6 text-gray-400 text-xl max-w-xs">
-                A curated collection of digital experiences, tools, and experiments.
-              </p>
-              <div className="mt-8 h-1 w-20 bg-purple-500 rounded-full" />
-            </div>
+    <div className="bg-black text-white relative">
 
-            {/* Project Cards */}
-            {projects.map((project, i) => (
-              <ProjectCard key={i} project={project} />
-            ))}
-          </motion.div>
+      {/* === DESKTOP: SCROLL STACK === */}
+      <section className="hidden md:block min-h-screen">
+        <div className="pt-20 px-20 text-center mb-4 relative z-10 pointer-events-none">
+          <h1 className="text-7xl font-bold leading-tight">
+            Selected <span className="text-purple-500">Works</span>
+          </h1>
+          <p className="mt-6 text-gray-400 text-xl">
+            A curated collection of digital experiences.
+          </p>
         </div>
+
+        <ScrollStack
+          itemDistance={100} // Distance between cards
+          itemStackDistance={40} // How much they show when stacked
+          stackPosition={180} // Offset from top where stacking starts (px approx)
+          useWindowScroll={true}
+        >
+          {projects.map((project, i) => (
+            <ScrollStackItem
+              key={i}
+              itemClassName="bg-neutral-900 border-neutral-800 overflow-hidden !p-0"
+            >
+              <ProjectCardContent project={project} />
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
       </section>
 
       {/* === MOBILE: VERTICAL LIST === */}
@@ -86,32 +81,32 @@ export default function WorkGallery() {
   );
 }
 
-// === DESKTOP CARD ===
-function ProjectCard({ project }: { project: any }) {
+// === DESKTOP CARD CONTENT ===
+function ProjectCardContent({ project }: { project: any }) {
   return (
     <a
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative h-[60vh] w-[600px] shrink-0 overflow-hidden rounded-3xl bg-neutral-900 border border-neutral-800 cursor-pointer"
+      className="group relative block w-full h-full cursor-pointer"
     >
       {/* Image Background */}
-      <div className="absolute inset-0">
+      <div className="relative h-full w-full">
         <Image
           src={project.image}
           alt={project.title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
       </div>
 
       {/* Content Overlay */}
       <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-        <h2 className="text-4xl font-bold mb-2 text-white">{project.title}</h2>
-        <p className="text-purple-300 text-lg mb-4 font-medium">{project.subtitle}</p>
-        
-        <p className="text-gray-300 mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+        <h2 className="text-5xl font-bold mb-3 text-white">{project.title}</h2>
+        <p className="text-purple-300 text-xl mb-4 font-medium">{project.subtitle}</p>
+
+        <p className="text-gray-300 mb-6 max-w-2xl text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 hidden lg:block">
           {project.description}
         </p>
 
@@ -119,7 +114,7 @@ function ProjectCard({ project }: { project: any }) {
           {project.techStack.map((t: string, i: number) => (
             <span
               key={i}
-              className="text-xs px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/10 text-white"
+              className="text-sm px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/10 text-white"
             >
               {t}
             </span>
