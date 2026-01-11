@@ -80,32 +80,34 @@ function ProjectCardContent({ project }: { project: any }) {
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block w-full h-full cursor-pointer"
+      className="group block w-full h-full cursor-pointer flex flex-col bg-neutral-900"
     >
-      {/* Image Background */}
-      <div className="relative h-full w-full">
+      {/* Image Section - Top Half */}
+      <div className="relative h-1/2 w-full overflow-hidden">
         <Image
           src={project.image}
           alt={project.title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
+        {/* Subtle overlay on image to ensure separation */}
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
       </div>
 
-      {/* Content Overlay */}
-      {/* Content Overlay */}
-      {/* Content Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full p-6 md:p-8 flex flex-col justify-start bg-gradient-to-b from-black/90 via-black/40 to-transparent">
-        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-white leading-tight">{project.title}</h2>
-        <p className="text-purple-300 text-lg mb-6 font-medium">{project.subtitle}</p>
+      {/* Content Section - Bottom Half */}
+      <div className="h-1/2 w-full p-6 md:p-8 flex flex-col">
+        <h2 className="text-3xl font-bold mb-1 text-white leading-tight">{project.title}</h2>
+        <p className="text-purple-400 text-lg mb-4 font-medium">{project.subtitle}</p>
 
-        {/* Description hidden for grid layout to prevent text overflow */}
+        <p className="text-gray-400 mb-6 text-sm line-clamp-3">
+          {project.description}
+        </p>
+
         <div className="flex gap-2 flex-wrap mt-auto">
           {project.techStack.map((t: string, i: number) => (
             <span
               key={i}
-              className="text-sm px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/10 text-white"
+              className="text-xs px-3 py-1 bg-neutral-800 rounded-md border border-neutral-700 text-gray-300"
             >
               {t}
             </span>
