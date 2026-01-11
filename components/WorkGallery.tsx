@@ -48,21 +48,13 @@ export default function WorkGallery() {
           </p>
         </div>
 
-        <ScrollStack
-          itemDistance={100} // Distance between cards
-          itemStackDistance={40} // How much they show when stacked
-          stackPosition={180} // Offset from top where stacking starts (px approx)
-          useWindowScroll={true}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-10 pt-10 pb-20 max-w-[1800px] mx-auto">
           {projects.map((project, i) => (
-            <ScrollStackItem
-              key={i}
-              itemClassName="bg-neutral-900 border-neutral-800 overflow-hidden !p-0"
-            >
+            <div key={i} className="aspect-square w-full rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 relative group">
               <ProjectCardContent project={project} />
-            </ScrollStackItem>
+            </div>
           ))}
-        </ScrollStack>
+        </div>
       </section>
 
       {/* === MOBILE: VERTICAL LIST === */}
@@ -102,15 +94,14 @@ function ProjectCardContent({ project }: { project: any }) {
       </div>
 
       {/* Content Overlay */}
-      <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-        <h2 className="text-5xl font-bold mb-3 text-white">{project.title}</h2>
-        <p className="text-purple-300 text-xl mb-4 font-medium">{project.subtitle}</p>
+      {/* Content Overlay */}
+      {/* Content Overlay */}
+      <div className="absolute top-0 left-0 w-full h-full p-6 md:p-8 flex flex-col justify-start bg-gradient-to-b from-black/90 via-black/40 to-transparent">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-white leading-tight">{project.title}</h2>
+        <p className="text-purple-300 text-lg mb-6 font-medium">{project.subtitle}</p>
 
-        <p className="text-gray-300 mb-6 max-w-2xl text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 hidden lg:block">
-          {project.description}
-        </p>
-
-        <div className="flex gap-2 flex-wrap">
+        {/* Description hidden for grid layout to prevent text overflow */}
+        <div className="flex gap-2 flex-wrap mt-auto">
           {project.techStack.map((t: string, i: number) => (
             <span
               key={i}

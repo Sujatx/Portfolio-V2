@@ -18,7 +18,7 @@ export default function SkillsRoom() {
   }, []);
 
   return (
-    <div className="relative h-screen flex flex-col items-center justify-center bg-gray-900 text-white overflow-hidden">
+    <div className="relative h-screen flex flex-col items-center justify-center bg-black text-white overflow-hidden">
 
 
       <h1 className="text-5xl mb-16 z-10 relative">Skills & Tech</h1>
