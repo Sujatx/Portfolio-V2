@@ -91,11 +91,23 @@ export default function EntryGate() {
     if (!container) return;
 
     const handleMouseMove = (e: MouseEvent) => {
+      // Disable parallax on mobile (below 768px)
+      if (window.innerWidth < 768) {
+        mouseX.set(0);
+        mouseY.set(0);
+        return;
+      }
+
       const rect = container.getBoundingClientRect();
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       mouseX.set(e.clientX - rect.left - centerX);
       mouseY.set(e.clientY - rect.top - centerY);
+
+      // Ripples can stay, or disable them too if desired. 
+      // User only asked to remove "cursor-tracking/parallax effects".
+      // Ripples are a click/hover effect, let's leave them or limit them. 
+      // Assuming ripples are okay, but parallax is the main thing.
 
       setRipples((prev) => [
         ...prev,
@@ -117,16 +129,15 @@ export default function EntryGate() {
 
   return (
     <div ref={containerRef} className="relative h-screen w-full overflow-hidden">
-      {/* Canvas starfield */}
+      {/* Canvas starfield (z-0) */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />
 
-      {/* Floating text */}
-      <div className="absolute inset-0 z-5 flex flex-col items-center justify-start pt-16 pointer-events-none">
+      {/* Floating text - Increased Z-index to be on top of everything (z-30) */}
+      <div className="absolute inset-0 z-30 flex flex-col items-center justify-start pt-32 md:pt-16 pointer-events-none">
         <motion.h1
-          className="text-white text-6xl md:text-8xl font-bold select-none tracking-wider"
+          className="text-white text-4xl md:text-6xl lg:text-8xl font-bold select-none tracking-wider text-center px-4"
           style={{
-            x: headingX,
-            y: useTransform(headingEntryY, (val) => val + headingY.get()),
+            y: useTransform(headingEntryY, (val) => val), // Parallax removed
             fontFamily: "'DuneRise', sans-serif",
           }}
         >
@@ -134,10 +145,9 @@ export default function EntryGate() {
         </motion.h1>
 
         <motion.p
-          className="text-gray-300 text-2xl md:text-3xl mt-2 select-none tracking-wide text-center"
+          className="text-gray-300 text-lg md:text-2xl lg:text-3xl mt-4 md:mt-2 select-none tracking-wide text-center px-6"
           style={{
-            x: taglineX,
-            y: useTransform(taglineEntryY, (val) => val + taglineY.get()),
+            y: useTransform(taglineEntryY, (val) => val), // Parallax removed
             fontFamily: "'DuneRise', sans-serif",
           }}
         >
@@ -145,23 +155,36 @@ export default function EntryGate() {
         </motion.p>
       </div>
 
-      {/* Surfer rising */}
+      {/* Surfer rising (z-10) */}
+      {/* Mobile: Anchor bottom, contain width. Desktop: Center, existing size. */}
       <motion.div
-        className="absolute inset-0 z-10 flex items-center justify-center"
+        className="absolute z-10 
+                   bottom-0 w-full flex justify-center items-end
+                   md:inset-0 md:items-center md:justify-center"
         style={{ y: surferEntryY }}
       >
         <img
           src="/surfer.png"
-          className="max-w-[120%] max-h-[120%] object-contain"
+          className="
+            object-contain 
+            /* === CONTROL: MOBILE SURFER SIZE === */
+            /* Much larger - twice the previous size */
+            max-w-[300%] max-h-[160vh] mb-0
+            md:max-w-[120%] md:max-h-[120%]
+          "
           alt="Silver Surfer"
         />
       </motion.div>
 
-      {/* Cursor ripples */}
+      {/* Bottom Fade Effect (z-20) - Overlays surfer, under text */}
+      {/* === CONTROL: FADE HEIGHT (Decreased slightly) === */}
+      <div className="absolute bottom-0 left-0 w-full h-24 md:h-40 bg-gradient-to-t from-black via-black/80 to-transparent z-20 pointer-events-none" />
+
+      {/* Cursor ripples (z-20) - matching fade layer or slightly above */}
       {ripples.map((r) => (
         <motion.div
           key={r.id}
-          className="absolute rounded-full border border-purple-400 opacity-50"
+          className="absolute rounded-full border border-purple-400 opacity-50 pointer-events-none"
           style={{ width: 20, height: 20, top: r.y - 10, left: r.x - 10, zIndex: 20 }}
           initial={{ scale: 0, opacity: 0.5 }}
           animate={{ scale: 5, opacity: 0 }}
