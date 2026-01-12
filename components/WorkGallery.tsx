@@ -38,7 +38,7 @@ export default function WorkGallery() {
     <div className="bg-black text-white relative">
 
       {/* === DESKTOP: SCROLL STACK === */}
-      <section className="hidden md:block min-h-screen">
+      <section id="work" className="hidden md:block min-h-screen">
         <div className="pt-20 px-20 text-center mb-4 relative z-10 pointer-events-none">
           <h1 className="text-7xl font-bold leading-tight">
             Selected <span className="text-purple-500">Works</span>

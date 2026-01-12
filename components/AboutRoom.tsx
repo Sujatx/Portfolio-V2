@@ -15,7 +15,7 @@ export default function AboutRoom() {
     "absolute left-1/2 -top-6 transform -translate-x-1/2 -translate-y-full z-20 px-5 py-4 min-w-[180px] rounded-xl bg-black/95 border border-neutral-700/70 text-neutral-100 shadow";
 
   return (
-    <div className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+    <div id="about" className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
       {/* === CHAMBER BOUNDARY === */}
       <div
         ref={chamberRef}

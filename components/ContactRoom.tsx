@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function ContactRoom() {
   return (
-    <div className="relative h-screen flex flex-col items-center justify-center bg-black text-white overflow-hidden">
+    <div id="contact" className="relative h-screen flex flex-col items-center justify-center bg-black text-white overflow-hidden">
       {/* Heading */}
       <motion.h1
         className="text-5xl mb-12"
